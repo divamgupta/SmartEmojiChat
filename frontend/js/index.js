@@ -116,7 +116,9 @@ chat.init();
 chat.selectChat('testtest');
 
 var searchFilter = {
-	options: { valueNames: ['name'] },
+	options: { valueNames: ['name' ] },
+
+
 	init: function() {
 		var userList = new List('people-list', this.options);
 		var noItems = $('<li id="no-items-found">No items found</li>');
@@ -128,7 +130,43 @@ var searchFilter = {
 				noItems.detach();
 			}
 		});
-	}
+
+		this.cacheDOM();
+	},
+
+	cacheDOM: function() {
+		this.$list = $('.useritem-container');
+
+	},
+
+	bindEvent: function(item) {
+		// $('.item').on('click', this.onSelect.bind(this));
+		var that = this;
+
+		$(".item").unbind("click")
+		$(".item").bind("click", function(){
+		    that.onSelect($(this).attr('data-name'))
+		});
+	
+	},
+
+	onSelect : function(username){
+		chat.selectChat(username);
+	} , 
+
+	addItem : function(name){
+		template = Handlebars.compile($("#user-list-template").html());
+		this.$list.append(template({name : name}));
+		this.init();
+		this.bindEvent();
+	},
+
+
+
 };
 
 searchFilter.init();
+for(i=0;i<6;i++)
+searchFilter.addItem('potato'+i);
+
+// searchFilter.addItem('potato');
