@@ -49,6 +49,8 @@ body {
 .people-list ul {
   padding: 20px;
   height: 770px;
+  padding-left:0;
+  padding-right: 0;
 }
 .people-list ul li {
   padding-bottom: 20px;
@@ -241,6 +243,8 @@ body {
 
 .item{
   cursor: hand;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .item:hover{
