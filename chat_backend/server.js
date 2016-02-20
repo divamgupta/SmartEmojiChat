@@ -22,7 +22,7 @@
 
   server.listen(process.env.PORT || 3000);
 
-  app.use(express["static"]('public'));
+  app.use(express["static"]('../frontend'));
 
   activeConnections = {};
 
@@ -42,6 +42,9 @@
     activeConnections[socket.browserId] = socket;
     socket.on('register_client', function(data) {
       var userName, userToken;
+      if (socket.userToken != null) {
+        return;
+      }
       userToken = data.userToken;
       userName = getUserFromToken(data.userToken);
       socket.userName = userName;
@@ -99,7 +102,8 @@
         results.push(activeConnections[browserId].emit('send_msg', {
           chatId: from_user,
           senderId: from_user,
-          msg: msg
+          msg: msg,
+          time: (new Date()).getTime()
         }));
       }
       return results;

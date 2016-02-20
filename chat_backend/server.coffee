@@ -15,7 +15,7 @@ server = require('http').Server(app)
 io = require('socket.io')(server)
 
 server.listen process.env.PORT or 3000
-app.use express.static('public')
+app.use express.static('../frontend')
 
 
 activeConnections = {}
@@ -110,7 +110,7 @@ messenger.addToQueue = (from_user , to_user , msg) ->
 		browserIdList = Object.keys(activeUsers[to_user])
 
 		for browserId in browserIdList
-			activeConnections[browserId].emit( 'send_msg' , { chatId : from_user  , senderId :  from_user , msg : msg }   )
+			activeConnections[browserId].emit( 'send_msg' , { chatId : from_user  , senderId :  from_user ,     msg : msg ,  time : (new Date()).getTime()  }   )
 	else
 
 		print "user not online"
