@@ -234,3 +234,16 @@ body {
   clear: both;
   height: 0;
 }
+
+.item-selected{
+  background-color: rgba(0 ,0 , 0, 0.2);
+}
+
+.item{
+  cursor: hand;
+}
+
+.item:hover{
+  background-color: rgba(0 ,0 , 0, 0.2);
+  
+}

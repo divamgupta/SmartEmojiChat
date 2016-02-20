@@ -34,18 +34,18 @@ var chat = {
 		// chat.addMsgInUI({text:"jjjjjj" , name:"jjihb  uy" , time: new Date(), recieved:8 })
 	},
 
-	newMsgRecived(msg) {
+	newMsgRecived : function(msg) {
 		//  { chatId : from_user  , senderId :  from_user , msg : msg ,  time : (new Date()).getTime()  }  
 
-		if (!(this.recivedMsgs[chatId]))
-			this.recivedMsgs[chatId] = [];
+		if (!(this.recivedMsgs[msg.chatId]))
+			this.recivedMsgs[msg.chatId] = [];
 
 		var x = {text:msg.msg , name:msg.senderId , time: msg.time , recieved:true } ;
 
-		this.recivedMsgs[chatId].push( x);
+		this.recivedMsgs[msg.chatId].push( x);
 
 		if(this.curSelectedChat ==  msg.chatId )
-			addMsgInUI(x);
+			this.addMsgInUI(x);
 
 	},
 
@@ -76,6 +76,8 @@ var chat = {
 
 		var x = {text: messageToSend , name: this.thisUserId , time: this.getCurrentTime() , recieved:false } ;
 		this.recivedMsgs[this.curSelectedChat] .push(x);
+
+		send(messageToSend , this.curSelectedChat );
 
 		this.addMsgInUI(x);
 
@@ -152,6 +154,9 @@ var searchFilter = {
 
 	onSelect : function(username){
 		chat.selectChat(username);
+		$('.item-selected').removeClass('item-selected');
+		$('[data-name="'+username+'"]').addClass('item-selected');
+		$('.chat-with').html(username)
 	} , 
 
 	addItem : function(name){
@@ -170,3 +175,42 @@ for(i=0;i<6;i++)
 searchFilter.addItem('potato'+i);
 
 // searchFilter.addItem('potato');
+
+
+
+
+
+my_username = prompt("enter the un");
+chat.thisUserId = my_username;
+
+ var socket = io.connect('http://localhost:3000');
+
+  socket.on('send_msg', function (data) {
+    chat.newMsgRecived(data);
+    console.log(data)
+  });
+
+  socket.on('sys_msg', function (data) {
+    console.log( 'sys_msg ' ,   data);
+  });
+
+  socket.on('connect', function () {
+    console.log("connected");
+    registerUser();
+  });
+
+  socket.on('disconnect', function () {
+    console.log("disconnect");
+  });
+
+  function registerUser()
+  {
+  	socket.emit('register_client' ,{userToken : my_username});
+  	
+  }
+
+
+  function send( msg , to_username)
+  {
+  	  socket.emit('send_msg' , {  msg : msg , to_username : to_username });
+  }
