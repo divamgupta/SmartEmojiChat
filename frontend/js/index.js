@@ -79,13 +79,14 @@ var chat = {
 
 		this.addMsgInUI(x);
 
-		this.$textarea.val('');
+		
 
 	},
 	addMessageEnter: function(event) {
 		// enter was pressed
 		if (event.keyCode === 13) {
 			this.onSendMessage(this.$textarea.val());
+			this.$textarea.val('');
 		}
 	},
 
