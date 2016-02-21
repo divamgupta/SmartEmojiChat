@@ -66,12 +66,11 @@ var chat = {
 		this.scrollToBottom();
 	},
 
-	onSendMessage: function() {
+	onSendMessage: function(messageToSend) {
 
 		if (!(this.recivedMsgs[this.curSelectedChat]))
 			return;
 
-		var messageToSend = this.$textarea.val();
 
 		var x = { text: messageToSend, name: this.thisUserId, time: this.getCurrentTime(), recieved: false };
 		this.recivedMsgs[this.curSelectedChat].push(x);
@@ -86,7 +85,7 @@ var chat = {
 	addMessageEnter: function(event) {
 		// enter was pressed
 		if (event.keyCode === 13) {
-			this.onSendMessage();
+			this.onSendMessage(this.$textarea.val());
 		}
 	},
 
