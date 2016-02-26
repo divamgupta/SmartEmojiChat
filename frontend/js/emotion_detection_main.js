@@ -78,6 +78,8 @@ function drawLoop() {
 		ctrack.draw(overlay);
 	}
 	var cp = ctrack.getCurrentParameters();
+
+	console.log("huhuhu " , cp);
 	
 	var er = ec.meanPredict(cp);
 	if (er) {

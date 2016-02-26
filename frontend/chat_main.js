@@ -40,6 +40,8 @@ var chat = {
 			this.scrollToBottom();
 		}
 
+		 $(".message").emotions();
+ 
 		// chat.addMsgInUI({text:"jjjjjj" , name:"jjihb  uy" , time: new Date(), recieved:8 })
 	},
 
