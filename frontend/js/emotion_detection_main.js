@@ -92,27 +92,32 @@ function drawLoop() {
 	}
 	// console.log(positions[44], positions[50]);
 
-	var dMouthHorizontal = getDistancePoints(positions[44], positions[50]);
-	var dMouthVertical = getDistancePoints(positions[60], positions[57]);
-	var dLeftEyebrow1 = getDistancePoints(positions[24], positions[21]);
-	var dLeftEyebrow2 = getDistancePoints(positions[24], positions[26]);
-	var indicator1 = ((dLeftEyebrow2 - dLeftEyebrow1) / Math.max(dLeftEyebrow1, dLeftEyebrow2)) * 15;
+	if( typeof SendMessage != 'undefined')
+	{
+		var dMouthHorizontal = getDistancePoints(positions[44], positions[50]);
+		var dMouthVertical = getDistancePoints(positions[60], positions[57]);
+		var dLeftEyebrow1 = getDistancePoints(positions[24], positions[21]);
+		var dLeftEyebrow2 = getDistancePoints(positions[24], positions[26]);
+		var indicator1 = ((dLeftEyebrow2 - dLeftEyebrow1) / Math.max(dLeftEyebrow1, dLeftEyebrow2)) * 15;
 
-	var dRightEyebrow1 = getDistancePoints(positions[29], positions[31]);
-	var dRightEyebrow2 = getDistancePoints(positions[29], positions[16]);
-	var indicator2 = ((dRightEyebrow2 - dRightEyebrow1) / Math.max(dRightEyebrow1, dRightEyebrow2))  * 15;
+		var dRightEyebrow1 = getDistancePoints(positions[29], positions[31]);
+		var dRightEyebrow2 = getDistancePoints(positions[29], positions[16]);
+		var indicator2 = ((dRightEyebrow2 - dRightEyebrow1) / Math.max(dRightEyebrow1, dRightEyebrow2))  * 15;
 
-	// console.log(indicator2);
-	var mx = Math.max(dMouthHorizontal, dMouthVertical, dLeftEyebrow1, dLeftEyebrow2, dRightEyebrow1, dRightEyebrow2);
-	// console.log(dMouthHorizontal);
-	var x = dMouthVertical * 2 / (1.0 * mx);
-	SendMessage("Mouth", "setMouthHeight", x * x * x);
-	var mouthWidth = getDistancePoints(positions[3], positions[11]);
-	console.log(mouthWidth);
-	SendMessage("Mouth", "setMouthWidth", dMouthHorizontal * 2.0 / (1.0 * mouthWidth));
-	// console.log(dMouthHorizontal);
-	SendMessage("Mouth", "setLeftBrow", indicator1);
-	SendMessage("Mouth", "setRightBrow", indicator2);
+		// console.log(indicator2);
+		var mx = Math.max(dMouthHorizontal, dMouthVertical, dLeftEyebrow1, dLeftEyebrow2, dRightEyebrow1, dRightEyebrow2);
+		// console.log(dMouthHorizontal);
+		var x = dMouthVertical * 2 / (1.0 * mx);
+		SendMessage("Mouth", "setMouthHeight", x * x * x);
+		var mouthWidth = getDistancePoints(positions[3], positions[11]);
+		console.log(mouthWidth);
+		SendMessage("Mouth", "setMouthWidth", dMouthHorizontal * 2.0 / (1.0 * mouthWidth));
+		// console.log(dMouthHorizontal);
+		SendMessage("Mouth", "setLeftBrow", indicator1);
+		SendMessage("Mouth", "setRightBrow", indicator2);
+	}
+
+	
 
 	var cp = ctrack.getCurrentParameters();
 
