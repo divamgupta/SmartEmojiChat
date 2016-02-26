@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en-us">
+
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <script src="TemplateData/UnityProgress.js"></script>
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" height="600px" width="960px"></canvas>
+    <script type='text/javascript'>
+  var Module = {
+    TOTAL_MEMORY: 268435456,
+    errorhandler: null,			// arguments: err, url, line. This function must return 'true' if the error is handled, otherwise 'false'
+    compatibilitycheck: null,
+    dataUrl: "Release/face.data",
+    codeUrl: "Release/face.js",
+    memUrl: "Release/face.mem",
+  };
+</script>
+<script src="Release/UnityLoader.js"></script>
+      <script src="js/index.js"></script>
+
+        <!-- THE WEBCAM SHIT SHARTS HERE  -->
+     <script src="js/utils.js"></script>
+    <script src="js/clmtrackr.js"></script>
+    <script src="models/model_pca_20_svm_emotionDetection.js"></script>
+    <script src="js/Stats.js"></script>
+    <script src="js/d3.min.js"></script>
+    <script src="js/emotion_classifier.js"></script>
+    <script src="js/emotionmodel.js"></script>
+ <div id="controls">
+        <input class="btn" type="button" value="wait, loading video" disabled="disabled" onclick="startVideo()" id="startbutton"></input>
+      </div>
+      <script src="js/emotion_detection_main.js"> </script>
+
+</html>
