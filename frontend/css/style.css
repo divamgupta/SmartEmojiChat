@@ -251,3 +251,13 @@ body {
   background-color: rgba(0 ,0 , 0, 0.2);
   
 }
+
+
+
+#emoji-img{
+  position: absolute;
+  right: 10px;
+  top: 60px;
+  width: 200px;
+  height: 200px;
+}

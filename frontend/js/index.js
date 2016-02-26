@@ -28,8 +28,17 @@ var chat = {
 		else
 			template = Handlebars.compile($("#message-template").html());
 
-		this.$chatHistoryList.append(template(msg));
-		this.scrollToBottom();
+		if(msg.text.indexOf("#emoji5656") > -1)
+		{
+			if(msg.recieved)
+			{
+				var gest = msg.text.replace("#emoji5656 " , "");
+				$("#emoji-img").attr("src" , "media/icon_"+gest+".png")
+			}
+		}else{
+			this.$chatHistoryList.append(template(msg));
+			this.scrollToBottom();
+		}
 
 		// chat.addMsgInUI({text:"jjjjjj" , name:"jjihb  uy" , time: new Date(), recieved:8 })
 	},
@@ -42,7 +51,8 @@ var chat = {
 
 		var x = { text: msg.msg, name: msg.senderId, time: msg.time, recieved: true };
 
-		this.recivedMsgs[msg.chatId].push(x);
+		if(!(x.text.indexOf("#emoji5656") > -1))
+			this.recivedMsgs[msg.chatId].push(x);
 
 		if (this.curSelectedChat == msg.chatId)
 			this.addMsgInUI(x);
@@ -170,8 +180,13 @@ var searchFilter = {
 };
 
 searchFilter.init();
-for (i = 0; i < 6; i++)
-	searchFilter.addItem('potato' + i);
+
+searchFilter.addItem('john');
+searchFilter.addItem('jack');
+searchFilter.addItem('berry');
+searchFilter.addItem('oliver');
+searchFilter.addItem('bruce');
+
 
 // searchFilter.addItem('potato');
 
