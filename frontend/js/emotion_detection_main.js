@@ -70,13 +70,37 @@ function startVideo() {
 	drawLoop();
 }
 
+getDistanceRaw = function(x1, y1, x2, y2) {
+	return math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));
+};
+
+getDistancePoints = function(p1, p2){
+	return getDistanceRaw(p1[0], p1[1], p2[0], p2[1]);
+}
 function drawLoop() {
 	requestAnimFrame(drawLoop);
 	overlayCC.clearRect(0, 0, 400, 300);
 	//psrElement.innerHTML = "score :" + ctrack.getScore().toFixed(4);
-	if (ctrack.getCurrentPosition()) {
+	var positions = ctrack.getCurrentPosition();
+	if (positions) {
 		ctrack.draw(overlay);
 	}
+	var dMouthHorizontal = getDistancePoints(positions[44], positions[50]);
+	var dMouthVertical = getDistancePoints(positions[60], positions[57]);
+	var dLeftEyebrow1 = getDistancePoints(positions[24], positions[21]);
+	var dLeftEyebrow2 = getDistancePoints(positions[24], positions[26]);
+	var indicator1 = ((dLeftEyebrow2 - dLeftEyebrow1) / dLeftEyebrow1) * 15;
+
+	var dRightEyebrow1 = getDistancePoints(positions[29], positions[31]);
+	var dRightEyebrow2 = getDistancePoints(positions[29], positions[16]);
+	var indicator2 = ((dRightEyebrow2 - dRightEyebrow1) / dRightEyebrow1) * 15;
+
+	var mx = max(dMouthHorizontal, dMouthVertical, dLeftEyebrow1, dLeftEyebrow2, dRightEyebrow1, dRightEyebrow2);
+	SendMessage("Mouth", "setMouthHeight", dMouthVertical / (1.0 * mx));
+	SendMessage("Mouth", "setMouthWidth", dMouthHorizontal / (1.0 * mx));
+	SendMessage("Mouth", "setLeftBrow", indicator1);
+	SendMessage("Mouth", "setRightBrow", indicator2);
+
 	var cp = ctrack.getCurrentParameters();
 	
 	var er = ec.meanPredict(cp);
