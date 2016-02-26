@@ -71,10 +71,15 @@ function startVideo() {
 }
 
 getDistanceRaw = function(x1, y1, x2, y2) {
-	return math.abs(math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));
+	return Math.abs(Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2)));
 };
 
 getDistancePoints = function(p1, p2){
+	// console.log("joojo", p1);
+	console.log(p1);
+	console.log(p2);
+	if (typeof p1 == undefined) p1 = [0, 0];
+	if (typeof p2 == undefined) p2 = [1, 1];
 	return getDistanceRaw(p1[0], p1[1], p2[0], p2[1]);
 }
 function drawLoop() {
@@ -85,25 +90,33 @@ function drawLoop() {
 	if (positions) {
 		ctrack.draw(overlay);
 	}
+	// console.log(positions[44], positions[50]);
+
 	var dMouthHorizontal = getDistancePoints(positions[44], positions[50]);
 	var dMouthVertical = getDistancePoints(positions[60], positions[57]);
 	var dLeftEyebrow1 = getDistancePoints(positions[24], positions[21]);
 	var dLeftEyebrow2 = getDistancePoints(positions[24], positions[26]);
-	var indicator1 = ((dLeftEyebrow2 - dLeftEyebrow1) / dLeftEyebrow1) * 15;
+	var indicator1 = ((dLeftEyebrow2 - dLeftEyebrow1) / Math.max(dLeftEyebrow1, dLeftEyebrow2)) * 15;
 
 	var dRightEyebrow1 = getDistancePoints(positions[29], positions[31]);
 	var dRightEyebrow2 = getDistancePoints(positions[29], positions[16]);
-	var indicator2 = ((dRightEyebrow2 - dRightEyebrow1) / dRightEyebrow1) * 15;
+	var indicator2 = ((dRightEyebrow2 - dRightEyebrow1) / Math.max(dRightEyebrow1, dRightEyebrow2))  * 15;
 
-	var mx = max(dMouthHorizontal, dMouthVertical, dLeftEyebrow1, dLeftEyebrow2, dRightEyebrow1, dRightEyebrow2);
-	SendMessage("Mouth", "setMouthHeight", dMouthVertical / (1.0 * mx));
-	SendMessage("Mouth", "setMouthWidth", dMouthHorizontal / (1.0 * mx));
+	// console.log(indicator2);
+	var mx = Math.max(dMouthHorizontal, dMouthVertical, dLeftEyebrow1, dLeftEyebrow2, dRightEyebrow1, dRightEyebrow2);
+	// console.log(dMouthHorizontal);
+	var x = dMouthVertical * 2 / (1.0 * mx);
+	SendMessage("Mouth", "setMouthHeight", x * x * x);
+	var mouthWidth = getDistancePoints(positions[3], positions[11]);
+	console.log(mouthWidth);
+	SendMessage("Mouth", "setMouthWidth", dMouthHorizontal * 2.0 / (1.0 * mouthWidth));
+	// console.log(dMouthHorizontal);
 	SendMessage("Mouth", "setLeftBrow", indicator1);
 	SendMessage("Mouth", "setRightBrow", indicator2);
 
 	var cp = ctrack.getCurrentParameters();
 
-	console.log("huhuhu " , cp);
+	// console.log("huhuhu " , cp);
 	
 	var er = ec.meanPredict(cp);
 	if (er) {
@@ -199,7 +212,8 @@ function updateData(data) {
 	{
 		prevE = maxE;
 		console.log("#emoji5656 " + maxE);
-		chat.onSendMessage("#emoji5656 " + maxE);
+		if(typeof chat!= 'undefined') 
+			chat.onSendMessage("#emoji5656 " + maxE);
 
 
 	}
